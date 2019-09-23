@@ -1,0 +1,40 @@
+---
+- name: Playbook for firewall default configuration
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Checking if firewalld is up
+    service:
+       name: firewalld
+       state: started
+       enabled: yes
+
+  - name: Configuring firewall ports
+    firewalld:
+       port: "{{item.port}}"
+       permanent: yes
+       immediate: yes
+       state: "{{item.state}}"
+    loop:
+      - {port: '9999/tcp', state: 'enabled'}
+      - {port: '8080/tcp', state: 'enabled'}
+      - {port: '8009/tcp', state: 'enabled'}
+      - {port: '23364/udp', state: 'enabled'}
+
+
+
+- name: Proxy Firewall configuration
+  hosts: master
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Configuring firewall port for JBoss EAP Master controller
+    firewalld:
+      port: "{{ item.port }}"
+      permanent: yes
+      immediate: yes
+      state: "{{ item.state }}"
+    loop:
+      - {port: '9990/tcp', state: 'enabled'}
+...
