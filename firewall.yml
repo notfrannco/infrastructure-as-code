@@ -21,11 +21,14 @@
       - {port: '8080/tcp', state: 'enabled'}
       - {port: '8009/tcp', state: 'enabled'}
       - {port: '23364/udp', state: 'enabled'}
+      - {port: '55200/udp', state: 'enabled'}
+      - {port: '45688/udp', state: 'enabled'}
+
 
 
 
 - name: Proxy Firewall configuration
-  hosts: master
+  hosts: dc
   gather_facts: false
   become: true
   tasks:
